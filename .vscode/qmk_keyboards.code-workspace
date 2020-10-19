@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"path": ".",
+		},
+		{
+			"path": "../keyboards",
+		},
+		{
+			"path": "../users",
+		},
+		{
+			"path": "../layouts",
+		},
+		{
+			"path": "../quantum/template",
+		},
+	],
+	"settings": {
+		"files.associations": {
+			"*.h": "c",
+			"*.c": "c",
+			"*.inc": "c",
+			"*.cpp": "cpp",
+			"*.hpp": "cpp",
+			"xstddef": "c",
+			"type_traits": "c",
+			"utility": "c",
+			"ranges": "c"
+		},
+	}
+}

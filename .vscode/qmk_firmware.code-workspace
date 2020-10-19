@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.h": "c",
+			"*.c": "c",
+			"*.inc": "c",
+			"*.cpp": "cpp",
+			"*.hpp": "cpp",
+			"xstddef": "c",
+			"type_traits": "c",
+			"utility": "c",
+			"ranges": "c"
+		},
+		"files.exclude": {
+			"**/.build": true,
+			"**/*.hex": true,
+			"**/*.bin": true,
+			// Custom
+			"docs/": true,
+			// Keyboards
+			"keyboards/": true,
+			"users/": true,
+			"layouts/": true,
+			"quantum/template/": true,
+		},
+	}
+}

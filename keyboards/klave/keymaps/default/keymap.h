@@ -1,0 +1,45 @@
+#pragma once
+
+#include "quantum.h"
+
+
+// Layers
+enum {
+    L_BASE,
+    L_LOWER,
+    L_RAISE,
+    L_ADJUST,
+    L_DANGER,
+} ;
+
+// Keycodes
+enum {
+    // Transparent
+    __LYR__ = _______,
+    __MOD__ = _______,
+    __WSP__ = _______,
+    __ESC__ = _______,
+
+    // Layers
+    K_LWR = MO(L_LOWER),
+    K_RSE = MO(L_RAISE),
+
+    // Modifiers
+    K_LSFT = OSM(MOD_LSFT),
+    K_RSFT = OSM(MOD_RSFT),
+
+    // Navigation
+    K_WRD_PREV = LCTL(KC_LEFT),
+    K_WRD_NEXT = LCTL(KC_RIGHT),
+};
+
+// Custom keycodes
+enum {
+    K_SAFE_RANGE = SAFE_RANGE,
+
+    // Diacritics
+    K_DIAC,
+
+    // Encoder
+    K_ENC_SM,
+};

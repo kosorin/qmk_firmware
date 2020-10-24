@@ -24,9 +24,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 extern keymap_config_t keymap_config;
 
-static uint8_t real_mods  = 0;
-static uint8_t weak_mods  = 0;
-static uint8_t macro_mods = 0;
+static struct {
+    uint8_t real_mods;
+    uint8_t weak_mods;
+    uint8_t macro_mods;
+#ifndef NO_ACTION_ONESHOT
+    uint8_t oneshot_mods;
+    uint8_t oneshot_locked_mods;
+#    if (defined(ONESHOT_TIMEOUT) && (ONESHOT_TIMEOUT > 0))
+    uint16_t oneshot_time;
+#    endif
+#endif
+} current_mods, suspended_mods, empty_mods;
 
 #ifdef USB_6KRO_ENABLE
 #    define RO_ADD(a, b) ((a + b) % KEYBOARD_REPORT_KEYS)
@@ -47,24 +56,21 @@ extern inline void del_key(uint8_t key);
 extern inline void clear_keys(void);
 
 #ifndef NO_ACTION_ONESHOT
-static uint8_t oneshot_mods        = 0;
-static uint8_t oneshot_locked_mods = 0;
-uint8_t        get_oneshot_locked_mods(void) { return oneshot_locked_mods; }
+uint8_t        get_oneshot_locked_mods(void) { return current_mods.oneshot_locked_mods; }
 void           set_oneshot_locked_mods(uint8_t mods) {
-    if (mods != oneshot_locked_mods) {
-        oneshot_locked_mods = mods;
-        oneshot_locked_mods_changed_kb(oneshot_locked_mods);
+    if (mods != current_mods.oneshot_locked_mods) {
+        current_mods.oneshot_locked_mods = mods;
+        oneshot_locked_mods_changed_kb(current_mods.oneshot_locked_mods);
     }
 }
 void clear_oneshot_locked_mods(void) {
-    if (oneshot_locked_mods) {
-        oneshot_locked_mods = 0;
-        oneshot_locked_mods_changed_kb(oneshot_locked_mods);
+    if (current_mods.oneshot_locked_mods) {
+        current_mods.oneshot_locked_mods = 0;
+        oneshot_locked_mods_changed_kb(current_mods.oneshot_locked_mods);
     }
 }
 #    if (defined(ONESHOT_TIMEOUT) && (ONESHOT_TIMEOUT > 0))
-static uint16_t oneshot_time = 0;
-bool            has_oneshot_mods_timed_out(void) { return TIMER_DIFF_16(timer_read(), oneshot_time) >= ONESHOT_TIMEOUT; }
+bool has_oneshot_mods_timed_out(void) { return TIMER_DIFF_16(timer_read(), current_mods.oneshot_time) >= ONESHOT_TIMEOUT; }
 #    else
 bool has_oneshot_mods_timed_out(void) { return false; }
 #    endif
@@ -189,18 +195,18 @@ bool is_oneshot_layer_active(void) { return get_oneshot_layer_state(); }
  * FIXME: needs doc
  */
 void send_keyboard_report(void) {
-    keyboard_report->mods = real_mods;
-    keyboard_report->mods |= weak_mods;
-    keyboard_report->mods |= macro_mods;
+    keyboard_report->mods = current_mods.real_mods;
+    keyboard_report->mods |= current_mods.weak_mods;
+    keyboard_report->mods |= current_mods.macro_mods;
 #ifndef NO_ACTION_ONESHOT
-    if (oneshot_mods) {
+    if (current_mods.oneshot_mods) {
 #    if (defined(ONESHOT_TIMEOUT) && (ONESHOT_TIMEOUT > 0))
         if (has_oneshot_mods_timed_out()) {
             dprintf("Oneshot: timeout\n");
             clear_oneshot_mods();
         }
 #    endif
-        keyboard_report->mods |= oneshot_mods;
+        keyboard_report->mods |= current_mods.oneshot_mods;
         if (has_anykey(keyboard_report)) {
             clear_oneshot_mods();
         }
@@ -210,84 +216,95 @@ void send_keyboard_report(void) {
     host_keyboard_send(keyboard_report);
 }
 
+void suspend_mods() {
+    suspended_mods = current_mods;
+    current_mods = empty_mods;
+    send_keyboard_report();
+}
+
+void resume_mods() {
+    current_mods = suspended_mods;
+    send_keyboard_report();
+}
+
 /** \brief Get mods
  *
  * FIXME: needs doc
  */
-uint8_t get_mods(void) { return real_mods; }
+uint8_t get_mods(void) { return current_mods.real_mods; }
 /** \brief add mods
  *
  * FIXME: needs doc
  */
-void add_mods(uint8_t mods) { real_mods |= mods; }
+void add_mods(uint8_t mods) { current_mods.real_mods |= mods; }
 /** \brief del mods
  *
  * FIXME: needs doc
  */
-void del_mods(uint8_t mods) { real_mods &= ~mods; }
+void del_mods(uint8_t mods) { current_mods.real_mods &= ~mods; }
 /** \brief set mods
  *
  * FIXME: needs doc
  */
-void set_mods(uint8_t mods) { real_mods = mods; }
+void set_mods(uint8_t mods) { current_mods.real_mods = mods; }
 /** \brief clear mods
  *
  * FIXME: needs doc
  */
-void clear_mods(void) { real_mods = 0; }
+void clear_mods(void) { current_mods.real_mods = 0; }
 
 /** \brief get weak mods
  *
  * FIXME: needs doc
  */
-uint8_t get_weak_mods(void) { return weak_mods; }
+uint8_t get_weak_mods(void) { return current_mods.weak_mods; }
 /** \brief add weak mods
  *
  * FIXME: needs doc
  */
-void add_weak_mods(uint8_t mods) { weak_mods |= mods; }
+void add_weak_mods(uint8_t mods) { current_mods.weak_mods |= mods; }
 /** \brief del weak mods
  *
  * FIXME: needs doc
  */
-void del_weak_mods(uint8_t mods) { weak_mods &= ~mods; }
+void del_weak_mods(uint8_t mods) { current_mods.weak_mods &= ~mods; }
 /** \brief set weak mods
  *
  * FIXME: needs doc
  */
-void set_weak_mods(uint8_t mods) { weak_mods = mods; }
+void set_weak_mods(uint8_t mods) { current_mods.weak_mods = mods; }
 /** \brief clear weak mods
  *
  * FIXME: needs doc
  */
-void clear_weak_mods(void) { weak_mods = 0; }
+void clear_weak_mods(void) { current_mods.weak_mods = 0; }
 
 /* macro modifier */
 /** \brief get macro mods
  *
  * FIXME: needs doc
  */
-uint8_t get_macro_mods(void) { return macro_mods; }
+uint8_t get_macro_mods(void) { return current_mods.macro_mods; }
 /** \brief add macro mods
  *
  * FIXME: needs doc
  */
-void add_macro_mods(uint8_t mods) { macro_mods |= mods; }
+void add_macro_mods(uint8_t mods) { current_mods.macro_mods |= mods; }
 /** \brief del macro mods
  *
  * FIXME: needs doc
  */
-void del_macro_mods(uint8_t mods) { macro_mods &= ~mods; }
+void del_macro_mods(uint8_t mods) { current_mods.macro_mods &= ~mods; }
 /** \brief set macro mods
  *
  * FIXME: needs doc
  */
-void set_macro_mods(uint8_t mods) { macro_mods = mods; }
+void set_macro_mods(uint8_t mods) { current_mods.macro_mods = mods; }
 /** \brief clear macro mods
  *
  * FIXME: needs doc
  */
-void clear_macro_mods(void) { macro_mods = 0; }
+void clear_macro_mods(void) { current_mods.macro_mods = 0; }
 
 #ifndef NO_ACTION_ONESHOT
 /** \brief set oneshot mods
@@ -295,11 +312,11 @@ void clear_macro_mods(void) { macro_mods = 0; }
  * FIXME: needs doc
  */
 void set_oneshot_mods(uint8_t mods) {
-    if (oneshot_mods != mods) {
+    if (current_mods.oneshot_mods != mods) {
 #    if (defined(ONESHOT_TIMEOUT) && (ONESHOT_TIMEOUT > 0))
-        oneshot_time = timer_read();
+        current_mods.oneshot_time = timer_read();
 #    endif
-        oneshot_mods = mods;
+        current_mods.oneshot_mods = mods;
         oneshot_mods_changed_kb(mods);
     }
 }
@@ -308,19 +325,19 @@ void set_oneshot_mods(uint8_t mods) {
  * FIXME: needs doc
  */
 void clear_oneshot_mods(void) {
-    if (oneshot_mods) {
-        oneshot_mods = 0;
+    if (current_mods.oneshot_mods) {
+        current_mods.oneshot_mods = 0;
 #    if (defined(ONESHOT_TIMEOUT) && (ONESHOT_TIMEOUT > 0))
-        oneshot_time = 0;
+        current_mods.oneshot_time = 0;
 #    endif
-        oneshot_mods_changed_kb(oneshot_mods);
+        oneshot_mods_changed_kb(current_mods.oneshot_mods);
     }
 }
 /** \brief get oneshot mods
  *
  * FIXME: needs doc
  */
-uint8_t get_oneshot_mods(void) { return oneshot_mods; }
+uint8_t get_oneshot_mods(void) { return current_mods.oneshot_mods; }
 #endif
 
 /** \brief Called when the one shot modifiers have been changed.
@@ -363,4 +380,4 @@ __attribute__((weak)) void oneshot_layer_changed_kb(uint8_t layer) { oneshot_lay
  *
  * FIXME: needs doc
  */
-uint8_t has_anymod(void) { return bitpop(real_mods); }
+uint8_t has_anymod(void) { return bitpop(current_mods.real_mods); }

@@ -19,32 +19,10 @@ bool diacritic_pressed[DIACRITIC_COUNT];
 
 
 void tap_diacritic(uint8_t keycode, uint16_t diacritic_keycode) {
-    /* TODO
-    bool shifted_diacritic = diacritic_keycode & QK_LSFT;
-    bool shifted = ((get_mods() | get_weak_mods() | get_oneshot_mods() | get_oneshot_locked_mods()) & ~get_ignored_mods()) & MOD_MASK_SHIFT;
-
-    // Dead key
-    if (!shifted_diacritic) {
-        set_ignored_mods(MOD_MASK_SHIFT);
-        send_keyboard_report();
-    }
+    suspend_mods();
     tap_code16(diacritic_keycode);
-    if (!shifted_diacritic) {
-        clear_ignored_mods();
-        send_keyboard_report();
-    }
-
-    // Key
-    if (shifted) {
-        set_weak_mods(MOD_BIT(KC_LSFT));
-        send_keyboard_report();
-    }
+    resume_mods();
     tap_code(keycode);
-    if (shifted) {
-        clear_weak_mods();
-        send_keyboard_report();
-    }
-    */
 }
 
 

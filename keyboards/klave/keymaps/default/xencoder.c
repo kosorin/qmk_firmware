@@ -2,7 +2,7 @@
 #include "keymap.h"
 
 
-bool encoder_scroll_mode;
+static bool encoder_scroll_mode;
 
 
 void update_left(bool clockwise) {
@@ -19,8 +19,8 @@ void update_left(bool clockwise) {
 
 void update_right(bool clockwise) {
     tap_code(encoder_scroll_mode
-        ? (clockwise ? KC_MS_WH_UP : KC_MS_WH_DOWN)
-        : (clockwise ? KC_PGUP : KC_PGDOWN));
+        ? (clockwise ? KC_PGUP : KC_PGDOWN)
+        : (clockwise ? KC_MS_WH_UP : KC_MS_WH_DOWN));
 }
 
 

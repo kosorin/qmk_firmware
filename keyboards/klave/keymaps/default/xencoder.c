@@ -11,7 +11,7 @@ void update_left(bool clockwise) {
     } else if (layer_state_is(L_RAISE)) {
         return;
     } else if (layer_state_is(L_LOWER)) {
-        tap_code(clockwise ? KC_MEDIA_PREV_TRACK : KC_MEDIA_NEXT_TRACK);
+        tap_code(clockwise ? KC_MEDIA_NEXT_TRACK : KC_MEDIA_PREV_TRACK);
     } else {
         tap_code(clockwise ? KC_AUDIO_VOL_UP : KC_AUDIO_VOL_DOWN);
     }
@@ -19,8 +19,8 @@ void update_left(bool clockwise) {
 
 void update_right(bool clockwise) {
     tap_code(encoder_scroll_mode
-        ? (clockwise ? KC_PGUP : KC_PGDOWN)
-        : (clockwise ? KC_MS_WH_UP : KC_MS_WH_DOWN));
+        ? (clockwise ? KC_PGDOWN : KC_PGUP)
+        : (clockwise ? KC_MS_WH_DOWN : KC_MS_WH_UP));
 }
 
 

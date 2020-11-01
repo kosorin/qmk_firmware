@@ -63,8 +63,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [L_ADJUST] = LAYOUT(
                                                                                                                                                                                                 /**/
-    /**/    __ESC__,    XXXXXXX,    XXXXXXX,    TD(TD_SLP), XXXXXXX,    XXXXXXX,                /**/                KC_INS,     XXXXXXX,    KC_NLCK,    KC_CLCK,    KC_SLCK,    KC_PAUS,        /**/
-    /**/    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    DM_REC2,                /**/                XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,        /**/
+    /**/    __ESC__,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,                /**/                KC_INS,     XXXXXXX,    KC_NLCK,    KC_CLCK,    KC_SLCK,    KC_PAUS,        /**/
+    /**/    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    DM_REC2,                /**/                XXXXXXX,    TD(TD_SLP), XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,        /**/
     /**/    __MOD__,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    DM_REC1,    KC_MSEL,    /**/    _______,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    __MOD__,        /**/
     /**/    __MOD__,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    DM_RSTP,                /**/                KC_APP,     XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    __MOD__,        /**/
     /**/                                                                                                                                                                                        /**/

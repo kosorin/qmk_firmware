@@ -103,7 +103,20 @@ void matrix_scan_user(void) {
     diacritic_update_user();
 
     LEADER_DICTIONARY() {
-        leading = false;
+        leading = false; 
+        
+        if (false) { }
+
+        else SEQ_TWO_KEYS(KC_E, KC_E) {
+            SEND_STRING("david@kosorin.net");
+        }
+        else SEQ_TWO_KEYS(KC_E, KC_G) {
+            SEND_STRING("david.kosorin@gmail.com");
+        }
+        else SEQ_TWO_KEYS(KC_E, KC_O) {
+            SEND_STRING("david.kosorin@outlook.com");
+        }
+
         leader_end();
     }
 

@@ -1,4 +1,5 @@
 # Build options
+LTO_ENABLE = yes
 SRC += diacritic.c
 SRC += tap_dance.c
 SRC += xencoder.c

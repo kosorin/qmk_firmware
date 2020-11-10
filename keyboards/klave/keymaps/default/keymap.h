@@ -3,6 +3,14 @@
 #include "quantum.h"
 
 
+typedef union {
+    uint32_t raw;
+    struct {
+        bool encoder_scroll_mode : 1;
+    };
+} user_config_t;
+
+
 // Layers
 enum {
     L_BASE,

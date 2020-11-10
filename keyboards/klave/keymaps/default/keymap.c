@@ -11,6 +11,9 @@
 LEADER_EXTERNS();
 
 
+user_config_t user_config;
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /*
@@ -75,6 +78,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
+
+void eeconfig_init_user(void) {
+    user_config.raw = 0;
+    user_config.encoder_scroll_mode = false;
+    eeconfig_update_user(user_config.raw);
+}
 
 void keyboard_post_init_user(void) {
 

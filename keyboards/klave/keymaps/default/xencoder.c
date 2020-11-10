@@ -2,7 +2,7 @@
 #include "keymap.h"
 
 
-static bool encoder_scroll_mode;
+extern user_config_t user_config;
 
 
 void update_left(bool clockwise) {
@@ -18,7 +18,7 @@ void update_left(bool clockwise) {
 }
 
 void update_right(bool clockwise) {
-    tap_code(encoder_scroll_mode
+    tap_code(user_config.encoder_scroll_mode
         ? (clockwise ? KC_PGDOWN : KC_PGUP)
         : (clockwise ? KC_MS_WH_DOWN : KC_MS_WH_UP));
 }
@@ -41,13 +41,14 @@ bool process_encoder(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case K_ENC_SM:
             if (record->event.pressed) {
-                encoder_scroll_mode = !encoder_scroll_mode;
+                user_config.encoder_scroll_mode ^= true;
+                eeconfig_update_user(user_config.raw);
             }
             return false;
         default:
             break;
     }
-            
+
     return true;
 
 }

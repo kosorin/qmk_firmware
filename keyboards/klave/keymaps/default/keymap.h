@@ -9,7 +9,6 @@ enum {
     L_LOWER,
     L_RAISE,
     L_ADJUST,
-    L_DANGER,
 } ;
 
 // Keycodes
@@ -27,10 +26,6 @@ enum {
     // Modifiers
     K_LSFT = OSM(MOD_LSFT),
     K_RSFT = OSM(MOD_RSFT),
-
-    // Navigation
-    K_WRD_PREV = LCTL(KC_LEFT),
-    K_WRD_NEXT = LCTL(KC_RIGHT),
 };
 
 // Custom keycodes

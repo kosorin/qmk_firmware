@@ -78,8 +78,8 @@ bool process_diacritic(uint16_t keycode, keyrecord_t *record) {
                     uint16_t diacritic_keycode = KC_NO;
                     switch (keycode) {
                         // Acute
-                        case KC_K: diacritic_keycode = D_ACUTE; actual_keycode = KC_E; break;
                         case KC_B: diacritic_keycode = D_ACUTE; actual_keycode = KC_U; break;
+                        case KC_K: diacritic_keycode = D_ACUTE; actual_keycode = KC_E; break;
                         case KC_I: diacritic_keycode = D_ACUTE; break;
                         case KC_O: diacritic_keycode = D_ACUTE; break;
                         case KC_A: diacritic_keycode = D_ACUTE; break;

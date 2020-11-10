@@ -77,10 +77,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 void keyboard_post_init_user(void) {
-    // debug_enable = true;
+
+#if CONSOLE_ENABLE
+    debug_enable = true;
     // debug_matrix = true;
     // debug_keyboard = true;
     // debug_mouse = true;
+#endif
+
+    user_config.raw = eeconfig_read_user();
+
 }
 
 void matrix_scan_user(void) {

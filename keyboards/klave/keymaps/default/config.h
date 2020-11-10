@@ -1,13 +1,11 @@
 #pragma once
 
+// Testing and debugging
+#undef DEBUG_MATRIX_SCAN_RATE
+
 // Disable features
 #define NO_ACTION_MACRO
 #define NO_ACTION_FUNCTION
-// #define NO_DEBUG
-// #define NO_PRINT
-
-// Testing and debugging
-// #define DEBUG_MATRIX_SCAN_RATE
 
 // Debounce
 #define DEBOUNCE 5

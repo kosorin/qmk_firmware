@@ -30,10 +30,6 @@ enum {
     // Layers
     K_LWR = MO(L_LOWER),
     K_RSE = MO(L_RAISE),
-
-    // Modifiers
-    K_LSFT = OSM(MOD_LSFT),
-    K_RSFT = OSM(MOD_RSFT),
 };
 
 // Custom keycodes

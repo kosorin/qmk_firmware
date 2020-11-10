@@ -6,15 +6,7 @@ extern user_config_t user_config;
 
 
 void update_left(bool clockwise) {
-    if (layer_state_is(L_ADJUST)) {
-        return;
-    } else if (layer_state_is(L_RAISE)) {
-        return;
-    } else if (layer_state_is(L_LOWER)) {
-        tap_code(clockwise ? KC_MEDIA_NEXT_TRACK : KC_MEDIA_PREV_TRACK);
-    } else {
-        tap_code(clockwise ? KC_AUDIO_VOL_UP : KC_AUDIO_VOL_DOWN);
-    }
+    tap_code(clockwise ? KC_AUDIO_VOL_UP : KC_AUDIO_VOL_DOWN);
 }
 
 void update_right(bool clockwise) {

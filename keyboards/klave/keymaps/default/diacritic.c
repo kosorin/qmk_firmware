@@ -41,7 +41,7 @@ bool process_diacritic(uint16_t keycode, keyrecord_t *record) {
     
     if (record->event.pressed) {
         if (diacritic) {
-            if (keycode == K_DIAC || keycode == K_LSFT || keycode == K_RSFT) {
+            if (keycode == K_DIAC || keycode == KC_LSFT || keycode == KC_RSFT) {
                 diacritic_timer = timer_read();
             } else {
                 diacritic_other_key = true;

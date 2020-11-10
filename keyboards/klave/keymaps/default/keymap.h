@@ -8,7 +8,7 @@ typedef union {
     struct {
         bool encoder_scroll_mode : 1;
     };
-} user_config_t;
+} user_settings_t;
 
 
 // Layers

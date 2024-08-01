@@ -35,6 +35,10 @@
 #    define DYNAMIC_MACRO_SIZE 128
 #endif
 
+#ifndef DYNAMIC_MACRO_DYNAMIC_DELAY_INCREMENT
+#    define DYNAMIC_MACRO_DYNAMIC_DELAY_INCREMENT 10
+#endif
+
 void dynamic_macro_led_blink(void);
 bool process_dynamic_macro(uint16_t keycode, keyrecord_t *record);
 void dynamic_macro_record_start_user(int8_t direction);

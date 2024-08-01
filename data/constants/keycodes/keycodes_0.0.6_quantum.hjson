@@ -1,0 +1,25 @@
+{
+    "keycodes": {
+        "0x7C7B": {
+            "group": "quantum",
+            "key": "QK_DYNAMIC_MACRO_DYNAMIC_DELAY_UP",
+            "aliases": [
+                "DM_DYNU"
+            ]
+        },
+        "0x7C7C": {
+            "group": "quantum",
+            "key": "QK_DYNAMIC_MACRO_DYNAMIC_DELAY_DOWN",
+            "aliases": [
+                "DM_DYND"
+            ]
+        },
+        "0x7C7D": {
+            "group": "quantum",
+            "key": "QK_DYNAMIC_MACRO_DYNAMIC_DELAY_RESET",
+            "aliases": [
+                "DM_DYNR"
+            ]
+        }
+    }
+}

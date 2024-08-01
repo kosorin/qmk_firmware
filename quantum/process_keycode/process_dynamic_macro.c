@@ -27,6 +27,10 @@
 #    include "backlight.h"
 #endif
 
+#ifdef DYNAMIC_MACRO_DYNAMIC_DELAY
+uint16_t g_dynamic_macro_dynamic_delay = DYNAMIC_MACRO_DYNAMIC_DELAY;
+#endif
+
 // default feedback method
 void dynamic_macro_led_blink(void) {
 #ifdef BACKLIGHT_ENABLE
@@ -99,7 +103,9 @@ void dynamic_macro_play(keyrecord_t *macro_buffer, keyrecord_t *macro_end, int8_
     while (macro_buffer != macro_end) {
         process_record(macro_buffer);
         macro_buffer += direction;
-#ifdef DYNAMIC_MACRO_DELAY
+#if defined(DYNAMIC_MACRO_DYNAMIC_DELAY)
+        wait_ms(g_dynamic_macro_dynamic_delay);
+#elif defined(DYNAMIC_MACRO_DELAY)
         wait_ms(DYNAMIC_MACRO_DELAY);
 #endif
     }
@@ -249,6 +255,25 @@ bool process_dynamic_macro(uint16_t keycode, keyrecord_t *record) {
                 case QK_DYNAMIC_MACRO_PLAY_2:
                     dynamic_macro_play(r_macro_buffer, r_macro_end, -1);
                     return false;
+#ifdef DYNAMIC_MACRO_DYNAMIC_DELAY
+                case QK_DYNAMIC_MACRO_DYNAMIC_DELAY_UP:
+                    if (g_dynamic_macro_dynamic_delay < 0xFFFF - DYNAMIC_MACRO_DYNAMIC_DELAY_INCREMENT) {
+                        g_dynamic_macro_dynamic_delay += DYNAMIC_MACRO_DYNAMIC_DELAY_INCREMENT;
+                    } else {
+                        g_dynamic_macro_dynamic_delay = 0xFFFF;
+                    }
+                    return false;
+                case QK_DYNAMIC_MACRO_DYNAMIC_DELAY_DOWN:
+                    if (g_dynamic_macro_dynamic_delay > DYNAMIC_MACRO_DYNAMIC_DELAY_INCREMENT) {
+                        g_dynamic_macro_dynamic_delay -= DYNAMIC_MACRO_DYNAMIC_DELAY_INCREMENT;
+                    } else {
+                        g_dynamic_macro_dynamic_delay = 0;
+                    }
+                    return false;
+                case QK_DYNAMIC_MACRO_DYNAMIC_DELAY_RESET:
+                    g_dynamic_macro_dynamic_delay = DYNAMIC_MACRO_DYNAMIC_DELAY;
+                    return false;
+#endif
             }
         }
     } else {

@@ -27,6 +27,11 @@
 #    include "backlight.h"
 #endif
 
+/**
+ * ID of the currently playing macro
+ */
+uint8_t playing_macro_id = 0;
+
 // default feedback method
 void dynamic_macro_led_blink(void) {
 #ifdef BACKLIGHT_ENABLE
@@ -91,7 +96,10 @@ void dynamic_macro_record_start(keyrecord_t **macro_pointer, keyrecord_t *macro_
 void dynamic_macro_play(keyrecord_t *macro_buffer, keyrecord_t *macro_end, int8_t direction) {
     dprintf("dynamic macro: slot %d playback\n", DYNAMIC_MACRO_CURRENT_SLOT());
 
-    layer_state_t saved_layer_state = layer_state;
+    layer_state_t saved_layer_state      = layer_state;
+    uint8_t       saved_playing_macro_id = playing_macro_id;
+
+    playing_macro_id = DYNAMIC_MACRO_CURRENT_SLOT();
 
     clear_keyboard();
     layer_clear();
@@ -109,6 +117,8 @@ void dynamic_macro_play(keyrecord_t *macro_buffer, keyrecord_t *macro_end, int8_
     layer_state_set(saved_layer_state);
 
     dynamic_macro_play_user(direction);
+
+    playing_macro_id = saved_playing_macro_id;
 }
 
 /**
@@ -248,6 +258,21 @@ bool process_dynamic_macro(uint16_t keycode, keyrecord_t *record) {
                     return false;
                 case QK_DYNAMIC_MACRO_PLAY_2:
                     dynamic_macro_play(r_macro_buffer, r_macro_end, -1);
+                    return false;
+                case QK_DYNAMIC_MACRO_WAIT_1:
+                    if (playing_macro_id) {
+                        wait_ms(DYNAMIC_MACRO_WAIT_1);
+                    }
+                    return false;
+                case QK_DYNAMIC_MACRO_WAIT_2:
+                    if (playing_macro_id) {
+                        wait_ms(DYNAMIC_MACRO_WAIT_2);
+                    }
+                    return false;
+                case QK_DYNAMIC_MACRO_WAIT_3:
+                    if (playing_macro_id) {
+                        wait_ms(DYNAMIC_MACRO_WAIT_3);
+                    }
                     return false;
             }
         }

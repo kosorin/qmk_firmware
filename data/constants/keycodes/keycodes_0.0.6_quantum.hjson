@@ -1,0 +1,25 @@
+{
+    "keycodes": {
+        "0x7C7B": {
+            "group": "quantum",
+            "key": "QK_DYNAMIC_MACRO_WAIT_1",
+            "aliases": [
+                "DM_WT1"
+            ]
+        },
+        "0x7C7C": {
+            "group": "quantum",
+            "key": "QK_DYNAMIC_MACRO_WAIT_2",
+            "aliases": [
+                "DM_WT2"
+            ]
+        },
+        "0x7C7D": {
+            "group": "quantum",
+            "key": "QK_DYNAMIC_MACRO_WAIT_3",
+            "aliases": [
+                "DM_WT3"
+            ]
+        }
+    }
+}

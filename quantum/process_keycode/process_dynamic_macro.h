@@ -35,6 +35,18 @@
 #    define DYNAMIC_MACRO_SIZE 128
 #endif
 
+#ifndef DYNAMIC_MACRO_WAIT_1
+#    define DYNAMIC_MACRO_WAIT_1 200
+#endif
+
+#ifndef DYNAMIC_MACRO_WAIT_2
+#    define DYNAMIC_MACRO_WAIT_2 500
+#endif
+
+#ifndef DYNAMIC_MACRO_WAIT_3
+#    define DYNAMIC_MACRO_WAIT_3 1000
+#endif
+
 void dynamic_macro_led_blink(void);
 bool process_dynamic_macro(uint16_t keycode, keyrecord_t *record);
 void dynamic_macro_record_start_user(int8_t direction);
